@@ -1,4 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(<h1>Hello from React</h1>, document.getElementById('root'));
+import MyCard from './components/MyCard.jsx'
+
+ReactDOM.render(<MyCard />, document.getElementById('root'));

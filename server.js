@@ -6,20 +6,32 @@ const morgan = require('morgan');
 const config = require('./config.js');
 
 // connect to the database and load models
-require('./server/models').connect(config.dbUrl);
+//require('./server/models').connect(config.dbUrl);
 
 const app = express();
 
-// tell the app to look for static files in these directories
-app.use(express.static('./server/static/'));
-app.use(express.static('./client/dist/'));
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*'); 
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST'); 
+	res.setHeader('Access-Control-Allow-Headers', 'X-requested-With, content-type, Authorization'); 
+	next();
+});
+
+// logs 
+app.use(morgan('dev'));
 
 // tell the app to parse HTTP body messages
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// tell the app to look for static files in these directories
+app.use(express.static('./client/src/static/'));
+app.use(express.static('./client/dist/'));
 
-app.use(morgan('dev'));
+// routes
+app.use('/', (req, res) => {
+	res.send('lol');
+})
 
 // start the server
 app.listen(config.port, () => {
